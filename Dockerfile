@@ -16,20 +16,17 @@ COPY . ./
 # Construire l'application
 RUN npm run build
 
-# Étape 2 : Servir l'application avec Caddy
-FROM caddy:2
-
-# Définir le répertoire de travail
-WORKDIR /app
-
-# Copier le Caddyfile
-COPY Caddyfile ./
-
-# Formatter le Caddyfile
-RUN caddy fmt Caddyfile --overwrite
+# Étape 2 : Servir l'application avec Nginx
+FROM nginx:alpine
 
 # Copier les fichiers buildés depuis l'étape précédente
-COPY --from=build /app/build ./dist
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Lancer Caddy pour servir l'application
-CMD ["caddy", "run", "--config", "Caddyfile", "--adapter", "caddyfile"]
+# Copier une configuration Nginx personnalisée (optionnel)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Exposer le port 80
+EXPOSE 80
+
+# Lancer Nginx
+CMD ["nginx", "-g", "daemon off;"]
