@@ -5,7 +5,6 @@ import { jwtDecode } from 'jwt-decode';
 const EtudiantDashboard = () => {
   const [soumissions, setSoumissions] = useState([]);
   const [userName, setUserName] = useState('');
-  const [selectedFeedback, setSelectedFeedback] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');

@@ -3,7 +3,6 @@ import {jwtDecode} from 'jwt-decode';
 import NavbarProfesseur from './NavbarProfesseur';
 import NavbarEtudiant from './NavbarEtudiant';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [role, setRole] = useState(null);
