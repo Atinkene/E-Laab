@@ -16,17 +16,20 @@ COPY . ./
 # Construire l'application
 RUN npm run build
 
-# Étape 2 : Servir l'application avec Nginx
-FROM nginx:alpine
+# Étape 2 : Servir l'application avec serve
+FROM node:18
 
-# Copier les fichiers buildés depuis l'étape précédente
-COPY --from=build /app/build /usr/share/nginx/html
+# Définir le répertoire de travail
+WORKDIR /app
 
-# Copier une configuration Nginx personnalisée (optionnel)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copier les fichiers buildés
+COPY --from=build /app/build ./build
 
-# Exposer le port 80
-EXPOSE 80
+# Installer serve pour servir les fichiers statiques
+RUN npm install -g serve
 
-# Lancer Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Exposer le port
+EXPOSE 3000
+
+# Lancer serve
+CMD ["serve", "-s", "build", "-l", "3000"]
