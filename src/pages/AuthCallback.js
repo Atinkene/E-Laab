@@ -10,7 +10,7 @@ const AuthCallback = () => {
     const token = searchParams.get('token');
     if (token) {
       localStorage.setItem('token', token);
-      axios.get('http://localhost:5000/auth/me', {
+      axios.get('https://dbplateformebackend.up.railway.app/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       }).then(response => {
         const { role } = response.data;
