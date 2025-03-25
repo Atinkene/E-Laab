@@ -37,5 +37,5 @@ EXPOSE 3000
 # Définir une variable d'environnement par défaut pour PORT
 ENV PORT=3000
 
-# Lancer http-server avec $PORT
-CMD ["sh", "-c", "http-server build -p ${PORT}"]
+# Lancer http-server avec l'option --spa pour rediriger toutes les requêtes vers index.html
+CMD ["sh", "-c", "http-server build --spa -p ${PORT}"]
