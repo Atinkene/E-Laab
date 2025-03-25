@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { registerProfesseur, registerEtudiant } from '../services/api';
 
-const Login = () => {
+const Register = () => {
   const [role, setRole] = useState('PROFESSEUR');
   const [formData, setFormData] = useState({
     login: '',
@@ -86,4 +86,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
