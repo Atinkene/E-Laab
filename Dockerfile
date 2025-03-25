@@ -25,6 +25,9 @@ WORKDIR /app
 # Copier les fichiers buildés
 COPY --from=build /app/build ./build
 
+# Copier package.json pour éviter les erreurs ENOENT (même si non strictement nécessaire)
+COPY --from=build /app/package.json ./package.json
+
 # Installer une version spécifique de serve (version 14.2.1 est stable)
 RUN npm install -g serve@14.2.1
 
@@ -34,5 +37,5 @@ EXPOSE 3000
 # Définir une variable d'environnement par défaut pour PORT
 ENV PORT=3000
 
-# Lancer serve (utiliser une syntaxe explicite pour éviter les problèmes de substitution)
-CMD ["sh", "-c", "serve -s build -l ${PORT}"]
+# Lancer serve avec une commande simplifiée
+CMD ["serve", "-s", "build", "-l", "3000"]
