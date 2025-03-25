@@ -21,8 +21,10 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-100">
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/inscription" element={<Register />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/etudiant" element={<Login />} />
+        <Route path="/professeur" element={<Login />} />
+        <Route path="/inscription" element={<Register />} />
         </Routes>
         <Navbar />
         <Routes>
