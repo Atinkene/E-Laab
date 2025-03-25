@@ -17,7 +17,7 @@ COPY . ./
 RUN npm run build
 
 # Étape 2 : Servir l'application avec serve
-FROM node:18
+FROM node:18-alpine
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -25,7 +25,7 @@ WORKDIR /app
 # Copier les fichiers buildés
 COPY --from=build /app/build ./build
 
-# Copier package.json pour éviter les erreurs ENOENT (même si non strictement nécessaire)
+# Copier package.json pour éviter les erreurs ENOENT
 COPY --from=build /app/package.json ./package.json
 
 # Installer une version spécifique de serve (version 14.2.1 est stable)
@@ -37,5 +37,5 @@ EXPOSE 3000
 # Définir une variable d'environnement par défaut pour PORT
 ENV PORT=3000
 
-# Lancer serve avec une commande simplifiée
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Lancer serve avec $PORT pour permettre à Railway de redéfinir le port
+CMD ["sh", "-c", "serve -s build -l ${PORT}"]

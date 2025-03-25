@@ -4,6 +4,7 @@ import NavbarProfesseur from './NavbarProfesseur';
 import NavbarEtudiant from './NavbarEtudiant';
 import { useNavigate } from 'react-router-dom';
 
+
 const Navbar = () => {
   const [role, setRole] = useState(null);
 
