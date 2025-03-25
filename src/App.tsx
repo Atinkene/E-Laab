@@ -14,30 +14,28 @@ import MesCorrections from './pages/MesCorrections';
 import SujetForm from './pages/SujetForm';
 import SoumissionForm from './pages/SoumissionForm';
 import AuthCallback from './pages/AuthCallback';
-// ...
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
-        <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/etudiant" element={<Login />} />
-        <Route path="/professeur" element={<Login />} />
-        <Route path="/inscription" element={<Register />} />
-        </Routes>
         <Navbar />
         <Routes>
-        <Route path="/professeur/dashboard" element={<ProfesseurDashboard />} />
-        <Route path="/professeur/correction" element={<ProfessseurCorrections />} />
-        <Route path="/professeur/stats" element={<ProfesseurStatistiques />} />
-        <Route path="/etudiant/stats" element={<EtudiantStatistiques />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/etudiant" element={<Login />} />
+          <Route path="/professeur" element={<Login />} />
+          <Route path="/inscription" element={<Register />} />
+          <Route path="/professeur/dashboard" element={<ProfesseurDashboard />} />
+          <Route path="/professeur/correction" element={<ProfessseurCorrections />} />
+          <Route path="/professeur/stats" element={<ProfesseurStatistiques />} />
+          <Route path="/etudiant/stats" element={<EtudiantStatistiques />} />
           <Route path="/professeur/sujets" element={<SujetForm />} />
           <Route path="/etudiant/dashboard" element={<EtudiantDashboard />} />
           <Route path="/etudiant/soumissions" element={<SoumissionForm />} />
           <Route path="/etudiant/messoumissions" element={<EtudiantSoumissions />} />
           <Route path="/etudiant/corrections" element={<MesCorrections />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="*" element={<div>404 - Page non trouvée</div>} />
         </Routes>
       </div>
     </Router>
