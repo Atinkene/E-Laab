@@ -16,23 +16,23 @@ COPY . ./
 # Construire l'application
 RUN npm run build
 
-# Étape 2 : Servir l'application avec Nginx
-FROM nginx:alpine
+# Étape 2 : Servir l'application avec serve
+FROM node:18
 
-# Copier les fichiers buildés depuis l'étape précédente
-COPY --from=build /app/build /usr/share/nginx/html
+# Définir le répertoire de travail
+WORKDIR /app
 
-# Vérifier que les fichiers buildés sont bien présents (pour le débogage)
-RUN ls -la /usr/share/nginx/html
+# Copier les fichiers buildés
+COPY --from=build /app/build ./build
 
-# Copier une configuration Nginx personnalisée
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Installer une version spécifique de serve (version 14.2.1 est stable)
+RUN npm install -g serve@14.2.1
 
-# Exposer le port 80 (Railway remplacera par $PORT)
-EXPOSE 80
+# Exposer le port
+EXPOSE 3000
 
 # Définir une variable d'environnement par défaut pour PORT
-ENV PORT=80
+ENV PORT=3000
 
-# Lancer Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Lancer serve (utiliser une syntaxe explicite pour éviter les problèmes de substitution)
+CMD ["sh", "-c", "serve -s build -l ${PORT}"]
