@@ -16,7 +16,6 @@
     "chart.js": "^4.4.8",
     "crypto-browserify": "^3.12.1",
     "date-fns": "^4.1.0",
-    "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
