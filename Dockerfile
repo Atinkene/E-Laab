@@ -16,7 +16,7 @@ COPY . ./
 # Construire l'application
 RUN npm run build
 
-# Étape 2 : Servir l'application avec http-server
+# Étape 2 : Servir l'application avec serve
 FROM node:20-alpine
 
 # Définir le répertoire de travail
@@ -28,14 +28,11 @@ COPY --from=build /app/build ./build
 # Copier package.json pour éviter les erreurs ENOENT
 COPY --from=build /app/package.json ./package.json
 
-# Installer http-server
-RUN npm install -g http-server
+# Installer serve
+RUN npm install -g serve@14.2.4
 
 # Exposer le port
 EXPOSE 3000
 
-# Définir une variable d'environnement par défaut pour PORT
-ENV PORT=3000
-
-# Lancer http-server avec l'option --spa pour rediriger toutes les requêtes vers index.html
-CMD ["sh", "-c", "http-server build --spa -p ${PORT}"]
+# Lancer serve avec l'option -s pour rediriger toutes les requêtes vers index.html
+CMD ["serve", "-s", "build", "-l", "3000"]
