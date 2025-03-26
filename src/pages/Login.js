@@ -1,26 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../index.css'; // Ajustez selon votre structure
+import '../index.css'; // Adjust based on your structure
 
 const Login = () => {
   const [login, setLogin] = useState('');
-  const [motDePasse, setMotDePasse] = useState(''); // Changé de password à motDePasse
+  const [motDePasse, setMotDePasse] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Check for existing token on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Optionally, verify the token with the backend here
+      // For simplicity, assuming the token implies a valid session
+      const role = localStorage.getItem('role'); // You’d need to store this too
+      if (role === 'ETUDIANT') {
+        navigate('/etudiant/dashboard');
+      } else if (role === 'PROFESSEUR') {
+        navigate('/professeur/dashboard');
+      }
+    }
+  }, [navigate]); // Dependency array includes navigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('https://dbplateformebackend.up.railway.app/auth/login', { // Changé à /auth/login
+      const res = await axios.post('https://dbplateformebackend.up.railway.app/auth/login', {
         login,
-        motDePasse, // Aligné avec l’ancienne version
+        motDePasse,
       });
       const { token, role } = res.data;
       localStorage.setItem('token', token);
+      localStorage.setItem('role', role); // Store role for use in useEffect
       console.log('Connexion réussie:', res.data);
 
-      // Redirection basée sur le rôle
+      // Redirect based on role
       if (role === 'ETUDIANT') {
         navigate('/etudiant/dashboard');
       } else if (role === 'PROFESSEUR') {
@@ -66,7 +82,7 @@ const Login = () => {
             </label>
             <input
               type="password"
-              id="motDePasse" // Changé de password à motDePasse
+              id="motDePasse"
               className="w-full p-2 border rounded mt-1"
               placeholder="********"
               value={motDePasse}

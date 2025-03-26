@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getAllSoumissions, updateSoumission } from '../services/api';
 
 const ProfessseurCorrections = () => {
@@ -7,18 +7,18 @@ const ProfessseurCorrections = () => {
   const [editing, setEditing] = useState(null);
   const [selectedFeedback, setSelectedFeedback] = useState(null);
 
-  useEffect(() => {
-    fetchSoumissions();
-  }, [sujetId]);
-
-  const fetchSoumissions = async () => {
+  const fetchSoumissions = useCallback(async () => {
     try {
       const response = await getAllSoumissions(sujetId ? { sujet_id: sujetId } : {});
       setSoumissions(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des soumissions:', error);
     }
-  };
+  }, [sujetId]); // Dépendance : sujetId
+
+  useEffect(() => {
+    fetchSoumissions();
+  }, [fetchSoumissions]); // Dépendance : fetchSoumissions stabilisée
 
   const handleUpdate = async (soumission) => {
     try {
@@ -36,7 +36,7 @@ const ProfessseurCorrections = () => {
   };
 
   const truncateText = (text, maxLength = 50) => {
-    if (!text) return 'Aucun feedback'; // Gestion de null ou undefined
+    if (!text) return 'Aucun feedback';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };
@@ -78,7 +78,7 @@ const ProfessseurCorrections = () => {
                 {editing === s.id ? (
                   <input
                     type="number"
-                    value={s.note || ''} // Gestion de note null
+                    value={s.note || ''}
                     onChange={(e) => setSoumissions(
                       soumissions.map((item) =>
                         item.id === s.id ? { ...item, note: parseInt(e.target.value) || null } : item
@@ -87,14 +87,14 @@ const ProfessseurCorrections = () => {
                     className="p-1 border rounded w-16"
                   />
                 ) : (
-                  s.note ?? 'Non noté' // Affichage par défaut si null
+                  s.note ?? 'Non noté'
                 )}
               </td>
               <td className="border p-2">
                 {editing === s.id ? (
                   <input
                     type="text"
-                    value={s.feedback || ''} // Gestion de feedback null
+                    value={s.feedback || ''}
                     onChange={(e) => setSoumissions(
                       soumissions.map((item) =>
                         item.id === s.id ? { ...item, feedback: e.target.value || null } : item

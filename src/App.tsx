@@ -15,29 +15,51 @@ import SujetForm from './pages/SujetForm';
 import SoumissionForm from './pages/SoumissionForm';
 import AuthCallback from './pages/AuthCallback';
 
+// Interface pour les props des layouts
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+// Layout pour les pages avec barre de navigation
+const PrivateLayout = ({ children }: LayoutProps) => (
+  <div className="min-h-screen bg-gray-100">
+    <Navbar />
+    {children}
+  </div>
+);
+
+// Layout pour les pages sans barre de navigation
+const PublicLayout = ({ children }: LayoutProps) => (
+  <div className="min-h-screen bg-gray-100">
+    {children}
+  </div>
+);
+
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/etudiant" element={<Login />} />
-          <Route path="/professeur" element={<Login />} />
-          <Route path="/inscription" element={<Register />} />
-          <Route path="/professeur/dashboard" element={<ProfesseurDashboard />} />
-          <Route path="/professeur/correction" element={<ProfessseurCorrections />} />
-          <Route path="/professeur/stats" element={<ProfesseurStatistiques />} />
-          <Route path="/etudiant/stats" element={<EtudiantStatistiques />} />
-          <Route path="/professeur/sujets" element={<SujetForm />} />
-          <Route path="/etudiant/dashboard" element={<EtudiantDashboard />} />
-          <Route path="/etudiant/soumissions" element={<SoumissionForm />} />
-          <Route path="/etudiant/messoumissions" element={<EtudiantSoumissions />} />
-          <Route path="/etudiant/corrections" element={<MesCorrections />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="*" element={<div>404 - Page non trouvée</div>} />
-        </Routes>
-      </div>
+      <Routes>
+        {/* Pages publiques sans Navbar */}
+        <Route path="/" element={<PublicLayout><Login /></PublicLayout>} />
+        <Route path="/etudiant" element={<PublicLayout><Login /></PublicLayout>} />
+        <Route path="/professeur" element={<PublicLayout><Login /></PublicLayout>} />
+        <Route path="/inscription" element={<PublicLayout><Register /></PublicLayout>} />
+
+        {/* Pages privées avec Navbar */}
+        <Route path="/professeur/dashboard" element={<PrivateLayout><ProfesseurDashboard /></PrivateLayout>} />
+        <Route path="/professeur/correction" element={<PrivateLayout><ProfessseurCorrections /></PrivateLayout>} />
+        <Route path="/professeur/stats" element={<PrivateLayout><ProfesseurStatistiques /></PrivateLayout>} />
+        <Route path="/etudiant/stats" element={<PrivateLayout><EtudiantStatistiques /></PrivateLayout>} />
+        <Route path="/professeur/sujets" element={<PrivateLayout><SujetForm /></PrivateLayout>} />
+        <Route path="/etudiant/dashboard" element={<PrivateLayout><EtudiantDashboard /></PrivateLayout>} />
+        <Route path="/etudiant/soumissions" element={<PrivateLayout><SoumissionForm /></PrivateLayout>} />
+        <Route path="/etudiant/messoumissions" element={<PrivateLayout><EtudiantSoumissions /></PrivateLayout>} />
+        <Route path="/etudiant/corrections" element={<PrivateLayout><MesCorrections /></PrivateLayout>} />
+        <Route path="/auth/callback" element={<PrivateLayout><AuthCallback /></PrivateLayout>} />
+
+        {/* Page 404 */}
+        <Route path="*" element={<PublicLayout><div>404 - Page non trouvée</div></PublicLayout>} />
+      </Routes>
     </Router>
   );
 }

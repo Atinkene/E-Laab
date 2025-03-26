@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react'; // Added useEffect
 import { Link, useNavigate } from 'react-router-dom';
 
 const NavbarProfesseur = () => {
   const navigate = useNavigate();
+
+  // Check authentication status on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // If no token is found, redirect to login page
+      navigate('/');
+    }
+  }, [navigate]); // Dependency array includes navigate
 
   const handleLogout = () => {
     localStorage.removeItem('token');

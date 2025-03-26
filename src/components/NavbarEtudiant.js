@@ -1,9 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react'; // Added useEffect
 
 const NavbarEtudiant = () => {
   const navigate = useNavigate();
 
- 
+  // Check authentication status on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // If no token is found, redirect to login page
+      navigate('/');
+    }
+  }, [navigate]); // Dependency array includes navigate
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
@@ -25,11 +34,9 @@ const NavbarEtudiant = () => {
           <Link to="/etudiant/soumissions" className="text-white hover:underline mr-4">Déposer un exercice</Link>
           <Link to="/etudiant/messoumissions" className="text-white hover:underline mr-4 relative">
             Mes soumissions
-            
           </Link>
           <Link to="/etudiant/corrections" className="text-white hover:underline mr-4 relative">
             Correction
-            
           </Link>
           <Link to="/etudiant/stats" className="text-white hover:underline">Statistiques</Link>
         </div>

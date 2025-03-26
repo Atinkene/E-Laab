@@ -1,26 +1,36 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const AuthCallback = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    if (token) {
-      localStorage.setItem('token', token);
-      axios.get('https://dbplateformebackend.up.railway.app/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      }).then(response => {
-        const { role } = response.data;
-        
-        navigate(role === 'PROFESSEUR' ? '/professeur/dashboard' : '/etudiant/dashboard');
-      }).catch(() => navigate('/'));
-    }
-  }, [searchParams, navigate]);
+    // Récupérer le token et le rôle depuis les paramètres d'URL
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    const role = params.get('role');
 
-  return <div>Authentification en cours...</div>;
+    if (token && role) {
+      // Stocker le token et le rôle dans localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+
+      // Rediriger en fonction du rôle
+      if (role === 'ETUDIANT') {
+        navigate('/etudiant/dashboard');
+      } else if (role === 'PROFESSEUR') {
+        navigate('/professeur/dashboard');
+      } else {
+        navigate('/login');
+      }
+    } else {
+      // Si le token ou le rôle est manquant, rediriger vers la page de connexion
+      navigate('/login');
+    }
+  }, [navigate, location]);
+
+  return <div>Redirection en cours...</div>;
 };
 
 export default AuthCallback;
