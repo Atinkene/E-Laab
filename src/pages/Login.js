@@ -51,6 +51,21 @@ const Login = () => {
 
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+      <div class="p-4 bg-gray-100 rounded-lg shadow-md fixed top-0 left-0">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Paramètres de connexion par défaut</h2>
+    
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold text-gray-700">Professeur</h3>
+        <p><strong>Matricule :</strong> massina</p>
+        <p><strong>Mot de passe :</strong> password123</p>
+    </div>
+    
+    <div>
+        <h3 class="text-lg font-semibold text-gray-700">Etudiant</h3>
+        <p><strong>Matricule :</strong> bassene</p>
+        <p><strong>Mot de passe :</strong> passer</p>
+    </div>
+</div>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <div className="flex justify-center mb-6">
           <img
