@@ -56,13 +56,13 @@ const Login = () => {
     
     <div class="mb-4">
         <h3 class="text-lg font-semibold text-gray-700">Professeur</h3>
-        <p><strong>Matricule :</strong> massina</p>
+        <p><strong>Login :</strong> massina</p>
         <p><strong>Mot de passe :</strong> password123</p>
     </div>
     
     <div>
         <h3 class="text-lg font-semibold text-gray-700">Etudiant</h3>
-        <p><strong>Matricule :</strong> bassene</p>
+        <p><strong>Login :</strong> bassene</p>
         <p><strong>Mot de passe :</strong> passer</p>
     </div>
 </div>
