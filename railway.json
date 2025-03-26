@@ -5,6 +5,6 @@
       "dockerfilePath": "Dockerfile"
     },
     "deploy": {
-      "startCommand": "http-server build --spa -p 3000"
+      "startCommand": "serve -s build -l 3000"
     }
   }
