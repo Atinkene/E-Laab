@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -21,19 +21,53 @@ interface LayoutProps {
 }
 
 // Layout pour les pages avec barre de navigation
-const PrivateLayout = ({ children }: LayoutProps) => (
-  <div className="min-h-screen bg-gray-100">
-    <Navbar />
-    {children}
-  </div>
-);
+const PrivateLayout = ({ children }: LayoutProps) => {
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+
+  // Vérifier si l'utilisateur est authentifié
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Vérifier le rôle pour les routes professeur
+  if (window.location.pathname.startsWith('/professeur') && role !== 'PROFESSEUR') {
+    return <Navigate to="/" replace />;
+  }
+
+  // Vérifier le rôle pour les routes étudiant
+  if (window.location.pathname.startsWith('/etudiant') && role !== 'ETUDIANT') {
+    return <Navigate to="/" replace />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      {children}
+    </div>
+  );
+};
 
 // Layout pour les pages sans barre de navigation
-const PublicLayout = ({ children }: LayoutProps) => (
-  <div className="min-h-screen bg-gray-100">
-    {children}
-  </div>
-);
+const PublicLayout = ({ children }: LayoutProps) => {
+  const token = localStorage.getItem('token');
+
+  // Si l'utilisateur est authentifié, rediriger vers le tableau de bord
+  if (token) {
+    const role = localStorage.getItem('role');
+    if (role === 'PROFESSEUR') {
+      return <Navigate to="/professeur/dashboard" replace />;
+    } else if (role === 'ETUDIANT') {
+      return <Navigate to="/etudiant/dashboard" replace />;
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {children}
+    </div>
+  );
+};
 
 function App() {
   return (
