@@ -29,7 +29,7 @@ const EtudiantDashboard = () => {
 
   // Calculs pour les cartes
   const pendingExercises = soumissions.filter(s => !s.note).length;
-  const lastNote = soumissions.length > 0 ? `${soumissions[0].note ?? 'Non noté'}/10` : 'Aucune note';
+  const lastNote = soumissions.length > 0 ? `${soumissions[0].note ?? 'Non noté'}/20` : 'Aucune note';
   const progression = '+5%'; // À calculer dynamiquement si données disponibles
 
   return (
